@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>In Loving Memory</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap">
+  <style>
+    body {
+      font-family: "Libre Baskerville", serif;
+      margin: 0;
+      padding: 0;
+      background-color: #BCABAE;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      background-color: #FBFBFB;
+      padding: 40px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      text-align: center;
+      min-width: 60%;
+      margin-left: 2rem;
+      margin-right: 2rem;
+      min-height: 50vh;
+      position: relative;
+      max-width: 820px;
+    }
+
+    .card h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: #0F0F0F;
+    }
+
+    .card hr {
+      width: 70%;
+      margin: 20px auto;
+      border: none;
+      border-top: 1px solid #716969;
+    }
+
+    .card p {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #2D2E2E;
+    }
+
+    .card .quote {
+    font-style: italic;
+    font-size: 16px;
+    color: #939090;
+    position: absolute;
+    bottom: 20px;
+    right: 100px;
+    text-align: left;
+    }
+
+    .card .bottom {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      font-size: 20px;
+      background-color: #716969;
+      color: #FBFBFB;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      animation: pulse 1s infinite;
+    }
+
+    .card .bottom:hover {
+      background-color: #2D2E2E;
+    }
+
+    .card .bottom span {
+      font-size: 14px;
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background-color: #716969;
+      color: #FBFBFB;
+      padding: 4px;
+      border-radius: 50%;
+    }
+
+    .card .bottom span:hover {
+      background-color: #2D2E2E;
+    }
+
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Gracias, Nanis</h1>
+      <hr>
+      <p style="margin: 2rem 4rem;">Gracias por cuidar de esos pequeños de ojos oscuros y cabello azabache,
+        por ser su guardiana, gracias por la fortaleza, valentía y audacia que les mostraste, 
+        gracias por tus hijos que de ellos nacieron aquellos 6 niños, gracias por enseñarles 
+        a <i>tomar agua y a bailar</i> para aguantar en las fiestas &#128516;.
+        Gracias por haber sido la Nanis. Gracias Fanny.
+        </p>
+        <p>Nos vemos en otra vida,
+        </p>
+      <p class="quote">Amor para la Nanis</p>
+      <div class="bottom">
+        &#128591;&#10024;
+        <span id="clickCounter">0</span>
+      </div>
+    </div>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js"></script>
+
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB_fJo_n6YcARwIQzK9m63JqB1nC5xO0xA",
+      authDomain: "makelife-bd735.firebaseapp.com",
+      databaseURL: "https://makelife-bd735.firebaseio.com",
+      projectId: "makelife-bd735",
+      storageBucket: "makelife-bd735.appspot.com",
+      messagingSenderId: "802269658768",
+      appId: "1:802269658768:web:bcff0144b0e36cdc65a215"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+     const button = document.querySelector('.bottom');
+    const counter = document.querySelector('#clickCounter');
+    let clickCount = 0;
+
+    // Get a reference to the Firebase database
+    const database = getDatabase(app);
+    const counterRef = ref(database, 'counter/');
+
+    // Retrieve the initial counter value from Firebase
+    onValue(counterRef, (snapshot) => {
+    const value = snapshot.val();
+    if (value !== null) {
+        clickCount = value;
+        counter.textContent = clickCount;
+    }
+    });
+
+    button.addEventListener('click', () => {
+    clickCount++;
+    counter.textContent = clickCount;
+
+    // Update the counter value in Firebase
+    set(ref(database, 'counter/'), clickCount);
+    });
+
+  </script>
+  
+</body>
